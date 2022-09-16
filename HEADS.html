@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head><SCript>
+    result = []
+        arr = ["heads", "tail"]
+        human = []
+        computer = []
+        tempobj = {}
+
+        function toss() {
+            let y = 1
+            let x = setInterval(() => {
+                playerOneflip = arr[Math.round(Math.random())]
+                compflip = arr[Math.round(Math.random())]
+                console.log(`${y} PlayerOne    Computer`)
+                console.log(`  ${playerOneflip}         ${compflip}`)
+                human.push(playerOneflip)
+                computer.push(compflip)
+
+
+                if (y == 10) {
+                    console.log("RESULTS", "🥇", "🥈")
+                    setTimeout(() => {
+                        cmptemp = computer.slice(-10)
+                        humTemp = human.slice(-10)
+                        playerHead = humTemp.filter(a => a.includes("heads")).length
+                        compHead = cmptemp.filter(b => b.includes("heads")).length
+
+                        tempobj = {
+                            computer: compHead,
+                            playerone: playerHead
+
+                        }
+                        result.push(tempobj)
+
+                        console.table(tempobj)
+                        console.log(`HEADS OBTAINED BY Player One     ${playerHead}`)
+                        console.log(`HEADS OBTAINED BY Computer      ${compHead}`);
+                        final(playerHead, compHead)
+
+                    }, 5000);
+                    clearInterval(x)
+
+
+
+
+                }
+                y++
+            }, 1000);
+        }
+
+        setTimeout(() => {
+            cmHead = computer.filter(side => side.includes("heads")).length
+            huHead = human.filter(side => side.includes("heads")).length
+            tempobj = {
+                totalCmpHeads: cmHead,
+                totalPlayerHeads: huHead
+            }
+            result.push(tempobj)
+            console.log(`Total no.of HEADS by computer`, (cmHead));
+            // console.log(`Total no.of HEADS by player`(huHead));
+            console.table(result)
+            makingCSV(result)
+            console.log(result)
+            if (cmHead > huHead) {
+                console.log("COMPUTER IS THE WINNER");
+            } else if (cmHead > huHead) {
+                console.log("HUMAN IS THE WINNER");
+            } else if (cmHead = huHead) {
+                console.log("........DRAW............");
+            }
+
+
+
+
+        }, 60800);
+        function final(cmHead, huHead) {
+            if (cmHead > huHead) {
+                console.log("winner is computer");
+            } else if (cmHead < huHead) {
+                console.log("Human is winner");
+            } else if (cmHead = huHead) {
+                console.log("....DRAW.....");
+            }
+            console.log("-------------------------------")
+        }
+        function makingCSV(finalArrObj) {
+            cs = " "
+            cs += "Round" + " , " + "computerhead" + " , " + "Playerheads"
+            cs += '\r\n'
+
+            for (i = 0; i < finalArrObj.length - 1; i++) {
+                cs += (i + 1) + "," + finalArrObj[i].computer + "," + finalArrObj[i].playerone + ","
+                cs += "\r\n"
+                if (i == 3) {
+                    cs += "TotalComputerHeads" + "," + "TotalPlayerHeads"
+                    cs += "\r\n"
+                    cs += finalArrObj[i + 1].totalCmpHeads + "," + finalArrObj[i + 1].totalPlayerHeads
+                    cs += "\r\n"
+                }
+            }
+            console.log(cs)
+            let tempBlob = new Blob([cs], { type: "text\csv" })
+            let tempURL = window.URL.createObjectURL(tempBlob)
+            let activation = document.createElement("a")
+            activation.href = tempURL
+            activation.download = "HeadsOrTails.csv"
+            activation.click()
+            window.URL.revokeObjectURL(tempURL)
+            activation.remove()
+
+
+
+        }
+
+
+        toss()
+        let z = 1
+        console.log("Round", z)
+        let n = setInterval(() => {
+            z++
+            console.log("Round", z)
+            toss()
+            if (z == 4) {
+                clearInterval(n)
+
+            }
+        }, 15100);
+
+</SCript>
+<body>
+    
+</body>
+</html>
